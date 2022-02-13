@@ -1,33 +1,17 @@
-.wrapper {
-    margin: auto;
-    width: 1180px;
-    overflow: hidden; /* because children will be floated */
+html, body, .wrapper, .slides, .slides div {
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
-#slides {
-    width: 999999px;
+.slides div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 50px;
 }
 
-#slides > div {
-    height: 600px;
-    width: 1180px;
-    float: left;
-    margin-right: 200px;
-    text-align: center;
- 
-        /* Flexible Box Model */       
-        display: -webkit-box;
-    -webkit-box-align: center;
-    -webkit-box-orient: horizontal;
-    -webkit-box-pack: center;
- 
-    display: box;
-    box-align: center;
-    box-orient: horizontal;
-    box-pack: center;
-}
-
-body {
+.slides div, .slides div:fullscreen {
     background-image: -webkit-gradient(
         radial, 
         50% 50%, 0, 

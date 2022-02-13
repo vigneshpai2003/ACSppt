@@ -1,59 +1,41 @@
-let Slides = {
-	container : $('#slides'),
-  
-	totalSlides : 0,
-  
-	translateAmount : 0,
-  
-	currentSlide : 0,
-  
-	slideWidth : 0,
+function main() {
+	currentSlide = 0;
+	maxSlide = 2;
 
-	init : function(totalSlides) {
-		var each;
-  
-		Slides.totalSlides = totalSlides;
-  
-		Slides.container.hide();
-		for ( var i = 0; i < Slides.totalSlides; i++ ) {
-			$('<div id="#slide-' + i + '"></div>').load('slides/' + i + '.html').appendTo(Slides.container);
-		}
-		Slides.container.show();
+	slides = $('.slides');
 
-		each = Slides.container.children('div');
-		
-		Slides.slideWidth = each.width() + parseInt(each.css('margin-right'), 10);
-
-		$(document.body).keydown(function(e) {
-			if ( e.keyCode === 39 || e.keyCode === 37 ) {
-				e.preventDefault();
-				(e.keyCode === 39) ? Slides.next() : Slides.prev();
-		    }
-		});
-	},
-
-	next : function() {
-		Slides.translateAmount -= Slides.slideWidth;
-		++Slides.currentSlide;
-		Slides.updateHash();
-		Slides.animate();
-	},
-
-	prev : function() {
-		if (Slides.translateAmount === 0) return;
-		Slides.translateAmount += Slides.slideWidth;
-		--Slides.currentSlide;
-		Slides.updateHash();
-		Slides.animate();
-    },
-
-	animate : function() {
-		Slides.container.children().css( '-webkit-transform', 'translateX(' + Slides.translateAmount + 'px)' );
-	},
-
-	updateHash : function() {
-		location.hash = '#slide-' + Slides.currentSlide;
+	// load all slides
+	slides.hide();
+	for (var i = 0; i <= maxSlide; i++) {
+		$('<div id="' + i + '"></div>').load('slides/' + i + '.html').appendTo(slides);
 	}
-};
-  
-Slides.init(3);
+	slides.show();
+
+	// hide all except first slide
+	for (var i = 1; i <= maxSlide; i++)
+		slides.children()[i].style.display = "none";
+
+	function move(n) {
+		if ((currentSlide === maxSlide && n === 1) || (currentSlide === 0 && n === -1)) return null;
+		
+		document.getElementById(String(currentSlide)).style.display = "none";
+		currentSlide += n;
+		document.getElementById(String(currentSlide)).style.display = "flex";
+	}
+
+	$(document.body).keydown(function(e) {
+		// Fullscreen with 'f'
+		if (e.keyCode === 70) {
+			let e = document.querySelector('.slides');
+			if (e.requestFullscreen || e.webkitRequestFullScreen || e.mozRequestFullScreen || e.msRequestFullScreen) {
+				e.requestFullscreen();
+			}
+		} // left and right arrows
+		else if ( e.keyCode === 39 || e.keyCode === 37 ) {
+			e.preventDefault();
+			(e.keyCode === 39) ? move(1) : move(-1);
+		}
+	});
+}
+
+main();
