@@ -1,6 +1,7 @@
 function main() {
 	currentSlide = 0;
 	maxSlide = 2;
+	mouseArea = 0.25
 
 	slides = $('.slides');
 
@@ -36,6 +37,12 @@ function main() {
 			(e.keyCode === 39) ? move(1) : move(-1);
 		}
 	});
+
+	$(document.body).click(function(e) {
+		let pos = e.pageX / screen.width;
+		if (pos < mouseArea) move(-1);
+		else if (pos > 1 - mouseArea) move(1);
+	})
 }
 
 main();
